@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="weekendApp">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Pick a place for a weekend</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/service.js"></script>
+</head>
+
+<body ng-controller="defaultCtrl as sample">
+	<ul class="bg-slides">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<div class="wrapper">
+		<header class="header">
+			<h1>Places to visit</h1>
+			<button type="button" ng-click="sample.toDefault()" class="btn header-btn">To default</button>
+			<button type="button" ng-click="sample.show()" class="btn header-btn">Add a place</button>
+		</header>
+		<div ng-show="sample.showVar" class="modal-form">
+			<div class="modal-form-content">
+				<p>
+					<label for="formName">Enter the city name</label>
+				</p>
+				<input type="text" id="formName" ng-model="sample.newCity">
+				<p>
+					<button class="btn" type="submit" ng-click="sample.save(sample.newCity)">Save</button>
+				</p>
+				<button class="modal-cross-btn" type="button" ng-click="sample.hide()"><img src="img/remove-symbol.png"></button>
+			</div>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th ng-click="sample.orderOnClick('name')">City</th>
+					<th ng-click="sample.orderOnClick('temperature')">t&degC</th>
+					<th colspan="2" ng-click="sample.orderOnClick('weather')">Weather</th>
+					<th ng-click="sample.orderOnClick('status')">Status</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody id="js-tbody" class="for-maxmin">
+				<tr ng-repeat="city in sample.cityObjects | orderBy:sample.orderVal track by $index" ng-class="sample.cityColor(city)">
+					<td class="td-city-name">{{city.name}}</td>
+					<td>{{city.temperature}}</td>
+					<td><img class="weather-ico" ng-src={{city.icon}}></td>
+					<td>{{city.weather}}</td>
+					<td>{{city.status}}</td>
+					<td>
+						<button ng-class="sample.disableButtons(city)?'btn-small btn-small-disabled':'btn-small btn-interesting'" ng-click="sample.asInteresting(city.name)" ng-disabled="sample.disableButtons(city)">interesting</button>
+					</td>
+					<td>
+						<button ng-class="sample.disableButtons(city)?'btn-small btn-small-disabled':'btn-small btn-visited '" ng-click="sample.asVisited(city.name)" ng-disabled="sample.disableButtons(city)">visited</button>
+					</td>
+					<td ng-click="sample.delete(city)"><img src="img/remove-symbol.png"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>
